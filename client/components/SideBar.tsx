@@ -36,6 +36,20 @@ const navMenu = [
     route: "/library",
   },
 ];
+const musicMenu = [
+  {
+    name: "Create Playlist",
+    icon: MdPlaylistAdd,
+    route: "/",
+  },
+  {
+    name: "Favorite",
+    icon: MdFavorite,
+    route: "/favorite",
+  },
+];
+
+const playlist = new Array(30).fill(1).map((_, i) => `Playlist ${i + 1}`);
 
 const SideBar = () => {
   return (
@@ -46,8 +60,7 @@ const SideBar = () => {
       paddingX="5px"
       color="light gray"
     >
-      This is the sidebar
-      <Box paddingY="20px">
+      <Box paddingY="20px" height="100%">
         <Box width="120px" marginBottom="20px" paddingX="20px">
           {/* <NextImage src="/logo.svg" height={60} width={120} /> */}
           <h1
@@ -80,6 +93,41 @@ const SideBar = () => {
             ))}
           </List>
         </Box>
+
+        <Box marginY="20px">
+          <List spacing={2}>
+            {musicMenu.map((menu) => (
+              <ListItem paddingX="20px" fontSize="16px" key={menu.name}>
+                <LinkBox>
+                  <NextLink href={menu.route} passHref>
+                    <LinkOverlay>
+                      <ListIcon
+                        as={menu.icon}
+                        color="white"
+                        marginRight="20px"
+                      />
+                      {menu.name}
+                    </LinkOverlay>
+                  </NextLink>
+                </LinkBox>
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+        <Divider bg="gray.800" />
+        <Box height="66%" overflowY="auto" paddingY="20px">
+          <List spacing={2}>
+            {playlist.map((playlist) => (
+              <ListItem paddingX="20px" key={playlist}>
+                <LinkBox>
+                  <NextLink href="/" passHref>
+                    <LinkOverlay>{playlist}</LinkOverlay>
+                  </NextLink>
+                </LinkBox>
+              </ListItem>
+            ))}
+          </List>
+        </Box>
       </Box>
     </Box>
   );
@@ -91,3 +139,6 @@ export default SideBar;
 // - NextImage for image rendering
 // - spacing - between items
 // - nextLink - opts for client side rendering
+// -  {new Array(50).fill(1).map(() => {
+//     return <h1>Playlist</h1>;
+// })}
