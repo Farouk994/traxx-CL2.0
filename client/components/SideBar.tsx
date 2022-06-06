@@ -18,6 +18,7 @@ import {
   MdPlaylistAdd,
   MdFavorite,
 } from "react-icons/md";
+// import prisma from "../prisma/seed";
 
 const navMenu = [
   {
@@ -48,6 +49,8 @@ const musicMenu = [
     route: "/favorite",
   },
 ];
+
+// console.log("This is prisma",prisma)
 
 const playlist = new Array(30).fill(1).map((_, i) => `Playlist ${i + 1}`);
 

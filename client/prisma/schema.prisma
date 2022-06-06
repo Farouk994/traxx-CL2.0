@@ -16,8 +16,7 @@ model User {
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   email     String     @unique
-  password  String     @unique
-  username  String
+  password  String
   playlists Playlist[]
 }
 
@@ -30,6 +29,7 @@ model Song {
   artistId  Int
   playlists Playlist[]
   duration  Int
+  url       String
 }
 
 model Artist {
@@ -46,8 +46,8 @@ model Playlist {
   updatedAt DateTime @updatedAt
   name      String
   songs     Song[]
-  user      User   @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
   userId    Int
 }
 
-// User? - 
+// User? -
