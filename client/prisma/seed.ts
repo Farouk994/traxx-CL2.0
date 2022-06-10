@@ -35,6 +35,24 @@ const run = async () => {
           password : bcrypt.hashSync("password",salt)
       }
   })
+
+  // Give user songs
+  const songs = await prisma.song.findMany({});
+  await Promise.all(new Array(10).fill(1).map(async(_,i) =>{
+       return prisma.playlist.create({
+           data : {
+               name : `Playlist #${i + 1}`,
+               user : {
+                   connect : {id : user.id}
+               },
+               songs : {
+                   connect : songs.map((song)=>({
+                       id : song.id
+                   }))
+               }
+           }
+       })
+  }))
 }
 
 run().catch((e)=>{
@@ -46,4 +64,5 @@ run().catch((e)=>{
 });
 
 
-// upsert - create or update, allow seeds to run 
+// upsert - create or update, allow seeds to run, use it for querying something unique
+// connect : 
