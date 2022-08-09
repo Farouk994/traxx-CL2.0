@@ -5,9 +5,9 @@ import { useSWRConfig } from "swr"; // it handles data fetching/caching/refetchi
 import { auth } from "../lib/mutations";
 
 const AuthForm: FC<{ mode: string }> = ({ mode }) => {
-  const { email, setEmail } = useState("");
-  const { password, setPassword } = useState("");
-  const { loading, setIsLoading } = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setIsLoading] = useState(false);
   const router = useRouter();
 
   return (
