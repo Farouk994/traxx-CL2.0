@@ -5,6 +5,16 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// - Run prisma init which will create a schema file and .env
+// - Make new app on heroku / addOns
+// - add two Postgress Db in heroku 
+// - for each db, add them as env var in .env file created 
+// - shadowDB - with heroku free postgress db,the user that creates the db doesn't have permission to create another 
+// db on the postgress instance,  prisma needs to create db on fly, 
+// heroku doesn't give you permission, so one db for the shadow and the other will be regular 
+// to store data and another db for the shadow db
+// - 
+
 datasource db {
   provider          = "postgresql"
   url               = env("DATABASE_URL")
