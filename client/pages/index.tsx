@@ -1,9 +1,10 @@
-import React from "react"
+import React from 'react';
+import GradientLayout from '../components/gradientLayout';
 
 export default function Home() {
   return (
-   <div>
-     <h1>PROFILE</h1>
-   </div>
-  )
+    <GradientLayout color='red'>
+      <div>Home page</div>
+    </GradientLayout>
+  );
 }
