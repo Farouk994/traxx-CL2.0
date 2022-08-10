@@ -15,9 +15,24 @@ const GradientLayout = ({
       height='100%'
       overflow='auto'
       bgGradient={`linear(${color}.500 0%, ${color}.600 15%, ${color}.700 40%, rgba(0,0,0,0.95) 75%)`}
+      color='white'
     >
       <Flex bg={`${color}.600`} padding='40px' align='end'>
-        My Profile
+        <Box padding='20px'>
+          <Image
+            boxSize='180px'
+            boxShadow='2xl'
+            src='/profile.jpg'
+            borderRadius={roundImage ? '100%' : '3px'}
+          />
+        </Box>
+        <Box padding='20px' lineHeight='40px'>
+          <Text fontSize='x-small' fontWeight='bold' casing='uppercase'>
+            {subtitle}
+          </Text>
+          <Text fontSize='6xl'>{title}</Text>
+          <Text fontSize='x-small'>{description}</Text>
+        </Box>
       </Flex>
     </Box>
   );
