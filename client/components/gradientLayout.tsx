@@ -26,7 +26,8 @@ const GradientLayout = ({
         <Box padding='20px'>
           <Image
             boxSize='180px'
-            boxShadow={`29px 29px 57px ${color}.500, -29px -29px 57px ${color}.700`}
+            boxShadow={`15px 15px 30px ${color}.500,
+                -15px -15px 30px ${color}.700`}
             src='/profile.jpg'
             borderRadius={roundImage ? '100%' : '3px'}
           />
