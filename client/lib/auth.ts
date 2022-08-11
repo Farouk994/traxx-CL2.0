@@ -1,8 +1,8 @@
 // Handles authentication by validating route, checking token before we make extra DB queries
 
-import jwt from "jsonwebtoken";
-import { NextApiRequest, NextApiResponse } from "next";
-import prisma from "./prisma";
+import jwt from 'jsonwebtoken';
+import { NextApiRequest, NextApiResponse } from 'next';
+import prisma from './prisma';
 
 // function checks token, validates user, then it will call handler or it will display 404
 export const validateRoute = (handler) => {
@@ -14,16 +14,16 @@ export const validateRoute = (handler) => {
       let user;
       try {
         //verify token
-        const { id } = jwt.verify(token, "hello");
+        const { id } = jwt.verify(token, 'hello');
         user = await prisma.user.findUnique({
           where: { id },
         });
         if (!user) {
-          throw new Error("Invalid Credentials");
+          throw new Error('Invalid Credentials');
         }
       } catch (error) {
         res.status(401);
-        res.json({ error: "Not Authorized" });
+        res.json({ error: 'Not Authorized' });
         return;
       }
       // if all works out then this will happen,
@@ -32,6 +32,11 @@ export const validateRoute = (handler) => {
     }
     //if no token then this will happen
     res.status(401);
-    res.json({ error: "Not Authorized" });
+    res.json({ error: 'Not Authorized' });
   };
+};
+
+export const validateToken = (token) => {
+  const user = jwt.verify(token, 'hello');
+  return user;
 };
