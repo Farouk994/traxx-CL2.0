@@ -1,0 +1,15 @@
+import formatDuration from 'format-duration';
+
+export const formatTime = (timeInSeconds = 0) => {
+  return formatDuration(timeInSeconds * 1000);
+};
+
+export const formatDate = (date: Date) => {
+    // date.toLocaleDateString
+  return date.toLocaleDateString('en-us', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+};
+
