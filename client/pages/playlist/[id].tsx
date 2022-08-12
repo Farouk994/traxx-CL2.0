@@ -14,6 +14,7 @@ const getBGColor = (id) => {
     'gray',
     'teal',
     'yellow',
+    'pink'
   ];
 
   return colors[id - 1] || colors[Math.floor(Math.random() * colors.length)];
