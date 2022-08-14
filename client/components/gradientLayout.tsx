@@ -1,6 +1,6 @@
 import { Box, Flex, Text } from '@chakra-ui/layout';
 import { Image } from '@chakra-ui/react';
-import styled from 'styled-components';
+// import styled from 'styled-components';
 
 // const Ui = styled.div`
 //   box-shadow: 29px 29px 57px #9e3d3d, -29px -29px 57px #e85959;
@@ -26,7 +26,8 @@ const GradientLayout = ({
         <Box padding='20px'>
           <Image
             boxSize='180px'
-            boxShadow={`29px 29px 57px ${color}.500, -29px -29px 57px ${color}.700`}
+            boxShadow={`15px 15px 30px ${color}.500,
+                -15px -15px 30px ${color}.700`}
             src='/profile.jpg'
             borderRadius={roundImage ? '100%' : '3px'}
           />
