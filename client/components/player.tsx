@@ -29,6 +29,9 @@ const Player = ({ songs, activeSong }) => {
   const [repeat, setRepeat] = useState(false);
   const [shuffle, setShuffle] = useState(false);
   const [duration, setDuration] = useState(0.0);
+  //make ref obj / then attach ref to react howler as prop
+  const soundRef = useRef(null);
+  const [isSeeking, setIsSeeking] = useState(false);
 
   // toggle play/pause button
   const setPlayState = (value) => {
@@ -43,11 +46,66 @@ const Player = ({ songs, activeSong }) => {
     setRepeat((state) => !state);
   };
 
+  const previousSong = () => {
+    setIndex((state) => {
+      // if this greater than 0, subtract one, if zero go
+      // back to end of playlist
+      return state ? state - 1 : songs.length;
+    });
+  };
+
+  const nextSong = () => {
+    setIndex((state: any) => {
+      // check if you're in shuffling state or not
+      if (shuffle) {
+        // logic
+        const next = Math.floor(Math.random() * songs.length);
+        if (next === state) {
+          return nextSong();
+        }
+        return next;
+      } else {
+        return state === songs.length - 1 ? 0 : state + 1;
+      }
+    });
+  };
+
+  const onEnd = () => {
+    if (repeat) {
+      // react howler instance
+      // track UI
+      setSeek(0);
+      // Move song back to zero
+      soundRef.current.seek(0);
+    } else {
+      nextSong();
+    }
+  };
+
+  const onLoad = () => {
+    const songDuration = soundRef.current.duration();
+    setDuration(songDuration);
+  };
+
+  // drag seek bar
+  const onSeek = (e) => {
+    setSeek(parseFloat(e[0])); // update visual ui seeking
+
+    // update song to seek to it as well
+    soundRef.current.seek(e[0]);
+  };
+
   return (
     <Box color='white'>
       <Box>
-        <ReactHowler playing={playing} src={activeSong?.url} />
-        </Box>
+        <ReactHowler
+          playing={playing}
+          src={activeSong?.url}
+          ref={soundRef}
+          onLoad={onLoad}
+          onEnd={onEnd}
+        />
+      </Box>
       <Center>
         <ButtonGroup color='gray.600'>
           <IconButton
@@ -65,6 +123,7 @@ const Player = ({ songs, activeSong }) => {
             aria-label='skip'
             fontSize='24px'
             icon={<MdSkipPrevious />}
+            onClick={previousSong}
           />
           {playing ? (
             <IconButton
@@ -90,9 +149,10 @@ const Player = ({ songs, activeSong }) => {
           <IconButton
             outline='none'
             variant='link'
-            aria-label='shuffle'
+            aria-label='next'
             fontSize='24px'
             icon={<MdSkipNext />}
+            onClick={nextSong}
           />
           <IconButton
             outline='none'
@@ -115,8 +175,16 @@ const Player = ({ songs, activeSong }) => {
               aria-label={['min', 'max']}
               step={0.1}
               min={0}
-              max={300}
               id='player-range'
+              // fix decimal places, if not then zero
+              max={duration ? duration.toFixed(2) : 0}
+              // handles when someone clicks the seek bar and it tracks
+              onChange={onSeek}
+              // when someone drags it / rangeSlider expects multiple values
+              value={[seek]}
+              // When someone is seeking left and right on the slider
+              onChangeStart={() => setIsSeeking(true)}
+              onChangeEnd={() => setIsSeeking(false)}
             >
               <RangeSliderTrack bg='gray.800'>
                 <RangeSliderFilledTrack bg='gray.600' />
