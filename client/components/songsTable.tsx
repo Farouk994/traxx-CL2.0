@@ -1,20 +1,24 @@
-import React from 'react';
+import { Box } from '@chakra-ui/layout';
+import { Table, Thead, Td, Tr, Tbody, Th, IconButton } from '@chakra-ui/react';
 import { BsFillPlayFill } from 'react-icons/bs';
-import {
-  Table,
-  Thead,
-  Td,
-  Tr,
-  Tbody,
-  Th,
-  IconButton,
-  Box,
-} from '@chakra-ui/react';
 import { AiOutlineClockCircle } from 'react-icons/ai';
 import { useStoreActions } from 'easy-peasy';
 import { formatDate, formatTime } from '../lib/formatters';
 
 const SongTable = ({ songs }) => {
+  // console.log(songs)
+  const playSongs = useStoreActions((store: any) => store.changeActiveSongs);
+  const setActiveSong = useStoreActions((store: any) => store.changeActiveSong);
+
+  // :FIXME:
+  const handlePlay = (activeSong?) => {
+    setActiveSong(activeSong || songs[0]);
+    playSongs(songs);
+    console.log(activeSong);
+  };
+// console.log(activeSong)
+  // const playActive = useStoreActions(()=>{})
+
   return (
     <Box bg='transparent' color='white'>
       <Box padding='10px' marginBottom='20px'>
@@ -25,6 +29,8 @@ const SongTable = ({ songs }) => {
             colorScheme='green'
             size='lg'
             isRound
+            onClick={() => handlePlay()}
+            // onClick={() => console.log("ANY SONG")}
           />
         </Box>
         <Table variant='unstyled'>
@@ -40,11 +46,18 @@ const SongTable = ({ songs }) => {
           </Thead>
           <Tbody>
             {songs.map((song, i) => (
+              // {console.log(song.name)}
               <Tr
                 sx={{
-                  transition: 'all .3s',
-                  '&:hover': { bg: 'rgba(255,255,255,0.1)' },
+                  transition: 'all .3s ',
+                  '&:hover': {
+                    bg: 'rgba(255,255,255, 0.1)',
+                  },
                 }}
+                key={song.id}
+                cursor='pointer'
+                onClick={() => handlePlay(song)}
+                // onClick={() => console.log(`${song.name}`)}
               >
                 <Td>{i + 1}</Td>
                 <Td>{song.name}</Td>
