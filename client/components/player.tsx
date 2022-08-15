@@ -21,6 +21,8 @@ import {
   MdSkipNext,
 } from 'react-icons/md';
 import { useStoreActions } from 'easy-peasy';
+import formatDuration from 'format-duration';
+import { formatTime } from '../lib/formatters';
 
 const Player = ({ songs, activeSong }) => {
   const [playing, setPlaying] = useState(true);
@@ -32,6 +34,29 @@ const Player = ({ songs, activeSong }) => {
   //make ref obj / then attach ref to react howler as prop
   const soundRef = useRef(null);
   const [isSeeking, setIsSeeking] = useState(false);
+
+  // this useEffect tracks the playing state at the isSeeking State
+  useEffect(() => {
+    let timerId;
+    // if music is playing and the user is currently NOT seeking then
+    // req animation frame 
+    if (playing && !isSeeking) {
+      // this function will be called 60 times a second and every time its called its updating the UI the seek 
+      // to whatever the current seek is
+      // 60 frames per second, will be smooth, will go high depending on your machine
+      const f = () => {
+        setSeek(soundRef.current.seek());
+        timerId = requestAnimationFrame(f);
+      };
+      //kick it off, this is the initial call, it takes our function one tick goes by
+      // sets the seek and calls itself again until we say cancel,
+      timerId = requestAnimationFrame(f);
+      // clean up to prevent memory leak
+      return () => cancelAnimationFrame(timerId);
+    }
+    // watch whether player/seeking is false or true
+    // animate when we are playing
+  }, [playing, isSeeking]);
 
   // toggle play/pause button
   const setPlayState = (value) => {
@@ -129,20 +154,20 @@ const Player = ({ songs, activeSong }) => {
             <IconButton
               outline='none'
               variant='link'
-              aria-label='play'
+              aria-label='pause'
               fontSize='40px'
               color='white'
-              icon={<MdOutlinePlayCircleFilled />}
+              icon={<MdOutlinePauseCircleFilled />}
               onClick={() => setPlayState(false)}
             />
           ) : (
             <IconButton
               outline='none'
               variant='link'
-              aria-label='pause'
+              aria-label='play'
               fontSize='40px'
               color='white'
-              icon={<MdOutlinePauseCircleFilled />}
+              icon={<MdOutlinePlayCircleFilled />}
               onClick={() => setPlayState(true)}
             />
           )}
@@ -168,7 +193,7 @@ const Player = ({ songs, activeSong }) => {
       <Box color='gray.600'>
         <Flex justify='center' align='center'>
           <Box width='10%'>
-            <Text fontSize='xs'>1:08</Text>
+            <Text fontSize='xs'>{formatTime(seek)}</Text>
           </Box>
           <Box width='80%'>
             <RangeSlider
@@ -193,7 +218,7 @@ const Player = ({ songs, activeSong }) => {
             </RangeSlider>
           </Box>
           <Box width='10%' textAlign='right'>
-            <Text fontSize='xs'>3:45</Text>
+            <Text fontSize='xs'>{formatTime(duration)}</Text>
           </Box>
         </Flex>
       </Box>
