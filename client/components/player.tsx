@@ -216,7 +216,7 @@ const Player = ({ songs, activeSong }) => {
               min={0}
               id='player-range'
               // fix decimal places, if not then zero
-              max={duration ? duration.toFixed(2) : 0}
+              max={duration ? (duration.toFixed(2) as unknown as number) : 0}
               // handles when someone clicks the seek bar and it tracks
               onChange={onSeek}
               // when someone drags it / rangeSlider expects multiple values
