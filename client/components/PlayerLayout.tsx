@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/layout';
-// import React from 'react';
+import React from 'react';
 import PlayerBar from './playerBar';
 import SideBar from './SideBar';
 
