@@ -26,7 +26,10 @@ import { formatTime } from '../lib/formatters';
 
 const Player = ({ songs, activeSong }) => {
   const [playing, setPlaying] = useState(true);
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(
+    // whatever the index is start there from whatever active song it is
+    songs.findIndex((s) => s.id === activeSong.id)
+  );
   const [seek, setSeek] = useState(0.0); // tracks progress bar/starts at 0
   const [repeat, setRepeat] = useState(false);
   const [shuffle, setShuffle] = useState(false);
@@ -34,14 +37,17 @@ const Player = ({ songs, activeSong }) => {
   //make ref obj / then attach ref to react howler as prop
   const soundRef = useRef(null);
   const [isSeeking, setIsSeeking] = useState(false);
+  // fix repeat issue
+  const repeatRef = useRef(repeat);
+  const setActiveSong = useStoreActions((state: any) => state.changeActiveSong);
 
   // this useEffect tracks the playing state at the isSeeking State
   useEffect(() => {
     let timerId;
     // if music is playing and the user is currently NOT seeking then
-    // req animation frame 
+    // req animation frame
     if (playing && !isSeeking) {
-      // this function will be called 60 times a second and every time its called its updating the UI the seek 
+      // this function will be called 60 times a second and every time its called its updating the UI the seek
       // to whatever the current seek is
       // 60 frames per second, will be smooth, will go high depending on your machine
       const f = () => {
@@ -96,7 +102,7 @@ const Player = ({ songs, activeSong }) => {
   };
 
   const onEnd = () => {
-    if (repeat) {
+    if (repeatRef.current) {
       // react howler instance
       // track UI
       setSeek(0);
@@ -119,6 +125,14 @@ const Player = ({ songs, activeSong }) => {
     // update song to seek to it as well
     soundRef.current.seek(e[0]);
   };
+
+  useEffect(() => {
+    repeatRef.current = repeat;
+  }, [repeat]);
+
+  useEffect(() => {
+    setActiveSong(songs[index]);
+  }, [index, setActiveSong, songs]);
 
   return (
     <Box color='white'>
