@@ -6,6 +6,7 @@ module.exports = {
   },
   eslint: {
     ignoreDuringBuilds: true
-  }
+  },
+  strictExportPresence: false
 }
 
