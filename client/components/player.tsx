@@ -153,7 +153,7 @@ const Player = ({ songs, activeSong }) => {
             aria-label='shuffle'
             fontSize='24px'
             icon={<MdShuffle />}
-            color={shuffle ? 'lime' : 'gray.600'}
+            color={shuffle ? '#1DB954' : 'gray.600'}
             onClick={onShuffle}
           />
           <IconButton
@@ -226,9 +226,17 @@ const Player = ({ songs, activeSong }) => {
               onChangeEnd={() => setIsSeeking(false)}
             >
               <RangeSliderTrack bg='gray.800'>
-                <RangeSliderFilledTrack bg='gray.600' />
+                <RangeSliderFilledTrack bg='white' _hover={{ bg: '#1DB954' }} />
               </RangeSliderTrack>
-              <RangeSliderThumb index={0} />
+              {playing ? (
+                ''
+              ) : (
+                <RangeSliderThumb
+                  index={0}
+                  bg='#1fdf64'
+                  _hover={{ bg: 'white' }}
+                />
+              )}
             </RangeSlider>
           </Box>
           <Box width='10%' textAlign='right'>
